@@ -3,354 +3,740 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Blog · Musings</title>
-    <!-- Inter font & Font Awesome -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <title>Lin Yi · Personal Blog | Design &amp; Thoughts</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Serif:wght@500;700;900&display=swap" rel="stylesheet">
     <style>
-        /* 样式基本保持不变，仅调整 about-banner 去掉头像后的布局 */
+        :root {
+            --bg: #faf8f5;
+            --card: #ffffff;
+            --text: #1a1917;
+            --muted: #6b6560;
+            --border: #e8e2da;
+            --primary: #c96f4a;
+            --primary-light: #fdf0ea;
+            --serif: 'Noto Serif', Georgia, 'Times New Roman', serif;
+            --sans: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            --radius: 18px;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 16px 50px rgba(0, 0, 0, 0.10);
+            --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+        }
+
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(145deg, #f0f3f8 0%, #e9eef4 100%);
-            color: #1e2b3c;
-            line-height: 1.5;
-            min-height: 100vh;
-            padding: 2rem 1rem;
+            font-family: var(--sans);
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
         }
 
         .container {
-            max-width: 1200px;
+            width: 100%;
+            max-width: 1080px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.6);
+            padding: 0 24px;
+        }
+
+        /* ========== Header Navigation ========== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(250, 248, 245, 0.92);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-radius: 2.5rem;
-            box-shadow: 0 20px 40px -10px rgba(0, 20, 40, 0.25), inset 0 1px 2px rgba(255,255,255,0.6);
-            padding: 2.5rem 2rem;
-            border: 1px solid rgba(255,255,255,0.8);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            transition: box-shadow 0.3s;
         }
 
-        .blog-header {
+        header.scrolled {
+            box-shadow: var(--shadow);
+        }
+
+        nav {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+            justify-content: space-between;
+            padding: 14px 0;
+            gap: 20px;
         }
 
-        .blog-title h1 {
-            font-size: 2.2rem;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            background: linear-gradient(135deg, #1f2b38, #2c3e50);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.2rem;
+        .logo {
+            font-family: var(--serif);
+            font-weight: 900;
+            font-size: 22px;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text);
         }
 
-        .blog-title p {
-            color: #4a5f73;
-            font-weight: 500;
-            font-size: 1rem;
+        .logo .logo-icon {
+            color: var(--primary);
+            font-size: 24px;
+        }
+
+        .nav-links {
             display: flex;
             align-items: center;
             gap: 6px;
+            list-style: none;
         }
 
-        .blog-nav {
+        .nav-links a {
+            font-size: 14px;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 50px;
+            color: var(--muted);
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+
+        /* ========== Hero Section ========== */
+        .hero {
+            padding: 130px 0 50px;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(175deg, #f6f1eb 0%, var(--bg) 100%);
+        }
+
+        .hero-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            margin: 0 auto 18px;
+            background: var(--primary-light);
+            border: 4px solid #fff;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
             display: flex;
-            gap: 1.5rem;
-            background: rgba(255,255,255,0.4);
-            padding: 0.6rem 1.5rem;
-            border-radius: 60px;
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255,255,255,0.7);
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: var(--primary);
+            overflow: hidden;
         }
 
-        .blog-nav a {
-            text-decoration: none;
-            color: #2c3e50;
-            font-weight: 500;
-            font-size: 1rem;
-            transition: color 0.2s;
+        .hero-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .blog-nav a:hover {
-            color: #2563eb;
+        .hero h1 {
+            font-family: var(--serif);
+            font-size: 42px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            color: var(--text);
         }
 
-        .featured-post {
-            background: rgba(255,255,255,0.5);
-            border-radius: 2rem;
-            padding: 2rem;
-            margin-bottom: 3rem;
-            border: 1px solid rgba(255,255,255,0.9);
-            box-shadow: 0 10px 20px -10px rgba(0,0,0,0.1);
+        .hero h1 span {
+            color: var(--primary);
         }
 
-        .featured-tag {
-            display: inline-block;
-            background: rgba(37, 99, 235, 0.15);
-            color: #1e3a6b;
-            padding: 0.3rem 1rem;
-            border-radius: 60px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            border: 1px solid rgba(255,255,255,0.5);
+        .hero-subtitle {
+            font-size: 16px;
+            color: var(--muted);
+            max-width: 520px;
+            margin: 0 auto 24px;
+            line-height: 1.8;
         }
 
-        .featured-post h2 {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #1e2a3a;
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
-        .featured-post p {
-            color: #3b4e62;
-            max-width: 80%;
-            margin-bottom: 1.5rem;
-        }
-
-        .read-more {
+        .btn {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            color: #2563eb;
+            gap: 8px;
+            padding: 11px 24px;
+            border-radius: 50px;
+            font-size: 14px;
             font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: var(--sans);
             text-decoration: none;
-            border-bottom: 2px solid transparent;
-            transition: border-color 0.2s;
+            letter-spacing: 0.2px;
         }
 
-        .read-more:hover {
-            border-bottom-color: #2563eb;
+        .btn-primary {
+            background-color: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(201, 111, 74, 0.3);
         }
 
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin: 2rem 0 1.5rem;
-            color: #1e2a3a;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(201, 111, 74, 0.45);
         }
 
-        .blog-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1.5px solid var(--primary);
         }
 
-        .blog-card {
-            background: rgba(255,255,255,0.5);
-            backdrop-filter: blur(8px);
-            border-radius: 1.8rem;
-            padding: 1.5rem;
-            border: 1px solid rgba(255,255,255,0.8);
-            box-shadow: 0 4px 12px -6px rgba(0,0,0,0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
+        .btn-outline:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
         }
 
-        .blog-card:hover {
-            transform: translateY(-4px);
-            background: white;
-            border-color: #b9cbff;
-            box-shadow: 0 15px 25px -12px rgba(37, 99, 235, 0.2);
+        /* ========== Articles Section ========== */
+        .section {
+            padding: 50px 0 60px;
         }
 
-        .card-category {
-            font-size: 0.75rem;
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #4b6a92;
-            margin-bottom: 0.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            background: var(--primary-light);
+            padding: 5px 18px;
+            border-radius: 50px;
+        }
+
+        .section-header h2 {
+            font-family: var(--serif);
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--text);
+        }
+
+        .section-header p {
+            color: var(--muted);
+            max-width: 520px;
+            margin: 10px auto 0;
+            font-size: 15px;
+        }
+
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 26px;
+        }
+
+        .post-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            transition: all var(--transition);
+            cursor: pointer;
             display: flex;
-            align-items: center;
-            gap: 0.3rem;
+            flex-direction: column;
         }
 
-        .blog-card h3 {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 0.8rem;
-            color: #1e2a3a;
+        .post-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+            border-color: #d8cec4;
         }
 
-        .blog-card p {
-            color: #3b4e62;
-            font-size: 0.95rem;
-            margin-bottom: 1.2rem;
+        .post-card-img {
+            height: 190px;
+            overflow: hidden;
+            position: relative;
+            background-color: #f0ebe6;
+        }
+
+        .post-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s;
+        }
+
+        .post-card:hover .post-card-img img {
+            transform: scale(1.05);
+        }
+
+        .post-card-category {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: rgba(255, 255, 255, 0.92);
+            color: var(--primary);
+            padding: 5px 14px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(6px);
+        }
+
+        .post-card-body {
+            padding: 26px 24px 22px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .post-card-title {
+            font-family: var(--serif);
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.5;
+            margin-bottom: 10px;
+            color: var(--text);
+            transition: color 0.3s;
             display: -webkit-box;
-            -webkit-line-clamp: 3;
+            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
 
-        .card-meta {
+        .post-card:hover .post-card-title {
+            color: var(--primary);
+        }
+
+        .post-card-excerpt {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.7;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .post-card-footer {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            font-size: 0.85rem;
-            color: #5f748b;
+            gap: 10px;
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
         }
 
-        .card-meta i {
-            margin-right: 0.3rem;
-            color: #3b82f6;
-        }
-
-        /* 重新设计的 about 区域：无头像，仅文本和社交链接 */
-        .about-banner {
-            margin: 3rem 0 2rem;
-            background: rgba(255,255,255,0.4);
-            border-radius: 2rem;
-            padding: 1.5rem 2rem;
+        .post-card-footer .read-more {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary);
             display: flex;
-            flex-wrap: wrap;
             align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            border: 1px solid rgba(255,255,255,0.7);
+            gap: 4px;
+            transition: gap 0.3s;
         }
 
-        .about-text p {
-            color: #3b4e62;
-            max-width: 700px;
-            margin: 0;
+        .post-card:hover .read-more {
+            gap: 8px;
         }
 
-        .about-social {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .about-social a {
-            color: #2c3e50;
-            font-size: 1.3rem;
-            transition: color 0.2s;
-        }
-        .about-social a:hover { color: #2563eb; }
-
-        .blog-footer {
-            margin-top: 3rem;
+        .view-all {
             text-align: center;
-            font-size: 0.85rem;
-            color: #5e6f88;
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-            background: rgba(255,255,255,0.3);
-            padding: 1rem 2rem;
-            border-radius: 60px;
-            backdrop-filter: blur(4px);
-        }
-        .blog-footer span i {
-            margin-right: 6px;
-            color: #2563eb;
+            margin-top: 40px;
         }
 
-        @media (max-width: 700px) {
-            .container { padding: 1.5rem; }
-            .blog-header { flex-direction: column; align-items: start; gap: 1rem; }
-            .featured-post p { max-width: 100%; }
-            .about-banner { flex-direction: column; align-items: flex-start; }
-            .about-social { margin-left: 0; }
+        /* ========== Footer ========== */
+        footer {
+            background: #1a1917;
+            color: #8a8580;
+            padding: 45px 0 20px;
+            margin-top: 30px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 25px;
+        }
+
+        .footer-brand .logo {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .footer-brand p {
+            font-size: 13px;
+            color: #7d7872;
+            max-width: 240px;
+        }
+
+        .footer-links h4 {
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .footer-links a {
+            font-size: 13px;
+            color: #8a8580;
+            display: block;
+            margin-bottom: 6px;
+            transition: color 0.3s, padding-left 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            padding-left: 4px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 16px;
+            border-top: 1px solid #333;
+            font-size: 12px;
+            color: #6b6560;
+        }
+
+        /* ========== Responsive ========== */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 30px;
+            }
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 62px;
+                left: 0;
+                width: 100%;
+                background: var(--card);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: var(--shadow-lg);
+                border-radius: 0 0 var(--radius) var(--radius);
+                gap: 6px;
+                border-bottom: 1px solid var(--border);
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .nav-links a {
+                padding: 12px 18px;
+                width: 100%;
+                text-align: center;
+                border-radius: var(--radius);
+            }
+            .mobile-menu-btn {
+                display: flex;
+            }
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .section-header h2 {
+                font-size: 26px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-avatar {
+                width: 76px;
+                height: 76px;
+                font-size: 30px;
+            }
+            .hero h1 {
+                font-size: 24px;
+            }
+            .hero-subtitle {
+                font-size: 14px;
+            }
+            .posts-grid {
+                grid-template-columns: 1fr;
+            }
+            .post-card-img {
+                height: 170px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Blog header -->
-        <div class="blog-header">
-            <div class="blog-title">
-                <h1>📝 Musings Notebook</h1>
-                <p><i class="fa-regular fa-pen-to-square"></i> Thoughts & Discoveries</p>
-            </div>
-            <div class="blog-nav">
-                <a href="#">Home</a>
-                <a href="#">Articles</a>
-                <a href="#">About</a>
-                <a href="#">Search</a>
-            </div>
+    <!-- Header Navigation -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">
+                    <i class="fas fa-feather-alt logo-icon"></i> Lin Yi's Blog
+                </a>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#articles">Articles</a></li>
+                    <li><a href="#links">Links</a></li>
+                </ul>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
         </div>
+    </header>
 
-        <!-- Featured post -->
-        <div class="featured-post">
-            <span class="featured-tag"><i class="fa-regular fa-star"></i> Featured</span>
-            <h2>Building a Personal Blog from Scratch</h2>
-            <p>Create a frosted-glass style blog page with simple HTML and CSS, no complex frameworks needed. This article guides you step by step to achieve an elegant reading space.</p>
-            <a href="#" class="read-more">Read more <i class="fa-regular fa-arrow-right"></i></a>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-avatar">
+                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=faces&q=80" alt="Lin Yi" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\"fas fa-user\"></i>';">
+            </div>
+            <h1>Hi, I'm <span>Lin Yi</span></h1>
+            <p class="hero-subtitle">A freelance designer, technical writer, and lover of everyday aesthetics. Here I share my thoughts, inspirations, and daily life.</p>
+            <div class="hero-buttons">
+                <a href="#articles" class="btn btn-primary"><i class="fas fa-book-open"></i> Read Articles</a>
+                <a href="#links" class="btn btn-outline"><i class="fas fa-link"></i> Friend Links</a>
+            </div>
         </div>
+    </section>
 
-        <!-- Latest posts -->
-        <div class="section-title">
-            <i class="fa-regular fa-clock"></i> Latest Posts
-        </div>
-        <div class="blog-grid">
-            <!-- Card 1 -->
-            <article class="blog-card">
-                <div class="card-category"><i class="fa-regular fa-folder"></i> Tech</div>
-                <h3>Exploring New CSS Features</h3>
-                <p>Recently CSS has added many practical features, such as the :has() selector, subgrid, and more. This article takes you through examples to get started quickly.</p>
-                <div class="card-meta">
-                    <span><i class="fa-regular fa-calendar"></i> 2026-03-15</span>
-                    <span><i class="fa-regular fa-comment"></i> 8 comments</span>
+    <!-- Latest Articles -->
+    <section class="section" id="articles">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Recent Posts</span>
+                <h2>Latest Articles</h2>
+                <p>Thoughts on design and technology, and beautiful moments from everyday life.</p>
+            </div>
+
+            <div class="posts-grid">
+                <!-- Article Card 1 -->
+                <div class="post-card">
+                    <div class="post-card-img">
+                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80" alt="Design System" loading="lazy">
+                        <span class="post-card-category">Design</span>
+                    </div>
+                    <div class="post-card-body">
+                        <h3 class="post-card-title">How to Build a Scalable Design System</h3>
+                        <p class="post-card-excerpt">A design system is more than a component library—it's a complete design language and collaboration workflow. In this article, I'll share my experience and lessons from building design systems in real projects.</p>
+                        <div class="post-card-footer">
+                            <span class="read-more">Read More <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </div>
                 </div>
-            </article>
-            <!-- Card 2 -->
-            <article class="blog-card">
-                <div class="card-category"><i class="fa-regular fa-folder"></i> Reflections</div>
-                <h3>The Age of Information Anxiety</h3>
-                <p>We receive a huge amount of information every day. How to stay focused? Sharing my information filtering methods and tool list.</p>
-                <div class="card-meta">
-                    <span><i class="fa-regular fa-calendar"></i> 2026-03-05</span>
-                    <span><i class="fa-regular fa-comment"></i> 5 comments</span>
-                </div>
-            </article>
-            <!-- Card 3 -->
-            <article class="blog-card">
-                <div class="card-category"><i class="fa-regular fa-folder"></i> Open Source</div>
-                <h3>My First PR Got Merged</h3>
-                <p>Documenting the entire process of participating in an open source project: from discovering an issue to submitting code, and communicating with maintainers.</p>
-                <div class="card-meta">
-                    <span><i class="fa-regular fa-calendar"></i> 2026-02-28</span>
-                    <span><i class="fa-regular fa-comment"></i> 3 comments</span>
-                </div>
-            </article>
-        </div>
 
-        <!-- About section (no avatar) -->
-        <div class="about-banner">
-            <div class="about-text">
-                <p>Full-stack developer & photography enthusiast. I enjoy experimenting with various tools and frameworks. This is my space for recording thoughts and sharing daily life. Feel free to reach out!</p>
-            </div>
-            <div class="about-social">
-                <a href="#"><i class="fa-brands fa-github"></i></a>
-                <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                <a href="#"><i class="fa-regular fa-envelope"></i></a>
-            </div>
-        </div>
+                <!-- Article Card 2 -->
+                <div class="post-card">
+                    <div class="post-card-img">
+                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80" alt="Artificial Intelligence" loading="lazy">
+                        <span class="post-card-category">Technology</span>
+                    </div>
+                    <div class="post-card-body">
+                        <h3 class="post-card-title">Designers in the Age of AI: Will Tools Replace Us?</h3>
+                        <p class="post-card-excerpt">With the explosion of AI generation tools, the designer's role is undergoing profound change. Instead of worrying about being replaced, let's think about how to use AI to boost creative efficiency.</p>
+                        <div class="post-card-footer">
+                            <span class="read-more">Read More <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- Footer -->
-        <div class="blog-footer">
-            <span><i class="fa-regular fa-copyright"></i> 2026 Musings Notebook</span>
-            <span><i class="fa-regular fa-rss"></i> RSS Feed</span>
+                <!-- Article Card 3 -->
+                <div class="post-card">
+                    <div class="post-card-img">
+                        <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600&q=80" alt="Travel" loading="lazy">
+                        <span class="post-card-category">Travel</span>
+                    </div>
+                    <div class="post-card-body">
+                        <h3 class="post-card-title">Seven Days in Yunnan: Finding Inner Peace</h3>
+                        <p class="post-card-excerpt">The wind of Dali, the nights of Lijiang, the skies of Shangri-La. An unplanned trip that unexpectedly healed long-standing anxiety.</p>
+                        <div class="post-card-footer">
+                            <span class="read-more">Read More <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Article Card 4 -->
+                <div class="post-card">
+                    <div class="post-card-img">
+                        <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=600&q=80" alt="Productivity" loading="lazy">
+                        <span class="post-card-category">Growth</span>
+                    </div>
+                    <div class="post-card-body">
+                        <h3 class="post-card-title">My Minimalist Workflow: 5 Tools to Get Everything Done</h3>
+                        <p class="post-card-excerpt">After trying hundreds of productivity tools, I finally found the minimalist combination that works best for me. Less is more—focus is true efficiency.</p>
+                        <div class="post-card-footer">
+                            <span class="read-more">Read More <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Article Card 5 -->
+                <div class="post-card">
+                    <div class="post-card-img">
+                        <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=600&q=80" alt="Food" loading="lazy">
+                        <span class="post-card-category">Life</span>
+                    </div>
+                    <div class="post-card-body">
+                        <h3 class="post-card-title">Weekend Kitchen: 30-Minute Comfort Food</h3>
+                        <p class="post-card-excerpt">After a busy week, treat yourself to a home-cooked meal. Three simple, quick dishes to help you rediscover the ritual of life in the kitchen.</p>
+                        <div class="post-card-footer">
+                            <span class="read-more">Read More <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Article Card 6 -->
+                <div class="post-card">
+                    <div class="post-card-img">
+                        <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=600&q=80" alt="Reading" loading="lazy">
+                        <span class="post-card-category">Reading</span>
+                    </div>
+                    <div class="post-card-body">
+                        <h3 class="post-card-title">July Reading List: Five Books That Changed My Thinking</h3>
+                        <p class="post-card-excerpt">From cognitive science to life philosophy, the books I read this month gave me new perspectives on work, life, and myself. Sharing them with you.</p>
+                        <div class="post-card-footer">
+                            <span class="read-more">Read More <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="links">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <i class="fas fa-feather-alt logo-icon" style="color:var(--primary);"></i> Lin Yi's Blog
+                    </a>
+                    <p>Recording thoughts, sharing life. Thanks for visiting.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Navigation</h4>
+                    <a href="#home">Home</a>
+                    <a href="#articles">Articles</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Follow</h4>
+                    <a href="#">Weibo</a>
+                    <a href="#">GitHub</a>
+                    <a href="#">Zhihu</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Other</h4>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Copyright</a>
+                    <a href="#">Friend Links</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 Lin Yi · All rights reserved · Powered by <a href="#" style="color:var(--primary);">InkSight</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        const menuIcon = mobileMenuBtn.querySelector('i');
+
+        mobileMenuBtn.addEventListener('click', function() {
+            navLinks.classList.toggle('open');
+            menuIcon.className = navLinks.classList.contains('open') ? 'fas fa-times' : 'fas fa-bars';
+        });
+
+        // Close mobile menu on nav link click
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function() {
+                navLinks.classList.remove('open');
+                menuIcon.className = 'fas fa-bars';
+                document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Header scroll shadow
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 30) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Post card click
+        document.querySelectorAll('.post-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const title = this.querySelector('.post-card-title').textContent;
+                alert('📖 Opening article: ' + title.slice(0, 30) + '...\n\n(Demo mode, click OK to continue)');
+            });
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                const targetEl = document.querySelector(targetId);
+                if (targetEl) {
+                    e.preventDefault();
+                    const headerHeight = 60;
+                    window.scrollTo({
+                        top: targetEl.offsetTop - headerHeight,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
